@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, FlatList, Modal, TextInput } from 'react-native';
-import { Checkbox } from 'expo-checkbox'; // Importa o CheckBox do expo-checkbox
+import { StyleSheet, View, Text, TouchableOpacity, FlatList, Modal } from 'react-native';
+import { Checkbox } from 'expo-checkbox';
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
+import {TodoModal} from '@/components/modal/TodoModal';
 
-// Definição dos tipos para uma tarefa
 interface Task {
   id: string;
   text: string;
@@ -13,14 +13,14 @@ interface Task {
 }
 
 const initialTasks: Task[] = [
-  { id: '1', text: 'Comprar leite', completed: false },
-  { id: '2', text: 'Ler um livro', completed: false },
-  { id: '3', text: 'Fazer exercício', completed: false },
+  { id: '1', text: 'Comprar leite', completed: true },
+  { id: '2', text: 'Ler um livro', completed: true },
+  { id: '3', text: 'Fazer exercício', completed: true },
 ];
 
-export default function Tarefa() {
+export default function todo() {
   const [tasks, setTasks] = useState<Task[]>(initialTasks);
-  const [modal, setModal] = useState(false)
+  const [modalVisible, setModalVisible] = useState(false);
 
   const toggleTaskCompletion = (id: string) => {
     setTasks(prevTasks =>
@@ -29,6 +29,20 @@ export default function Tarefa() {
       )
     );
   };
+
+  function newTask(text: string){
+    const newTask = {
+      id: (tasks.length + 1).toString(),
+      text,
+      completed: false
+    }
+
+    setTasks([
+      ...tasks, newTask
+    ])
+
+
+  }
 
   const renderItem = ({ item }: { item: Task }) => (
     <View style={styles.taskContainer}>
@@ -45,47 +59,37 @@ export default function Tarefa() {
     </View>
   );
 
+  const data = new Date();
   return (
     <ThemedView style={styles.container}>
-
-      <Modal
+      <ThemedView>
+        <Modal
           animationType="slide"
           transparent={true}
-          visible={modal}
-          onRequestClose={() => {
-            setModal(!modal);
-          }}
+          visible={modalVisible}
+          onRequestClose={() => setModalVisible(!modalVisible)}
         >
-          <View style= {styles.containerModal}>
-            <Text>
-              Modal
-            </Text>
-            <TouchableOpacity onPress={() => setModal(false)}>
-              <Text>
-                Fechar Modal
-              </Text>
-            </TouchableOpacity>
-            <TextInput/>
-          </View>
-          
-      </Modal>
-
-      <ThemedText type="default" style={styles.title}>
-        To-do
-      </ThemedText>
+          <TodoModal callBackNewTask={(e) => newTask(e)}  modalStatus={() => setModalVisible(!modalVisible)}/>
+        </Modal>
+        <ThemedText type="default" style={styles.title}>
+          To-do
+        </ThemedText>
+        <ThemedText type="default" style={styles.title}>
+          {data.toDateString()}
+        </ThemedText>
+      </ThemedView>
       <FlatList
         data={tasks}
         renderItem={renderItem}
         keyExtractor={item => item.id}
       />
       {
-        modal == false ? (
+        !modalVisible ? (
           <View style={styles.containerBotaoFlutuante}>
-            <TouchableOpacity onPress={() => setModal(true)} style={styles.botaoFlutuante }>
-              <TabBarIcon style={styles.botaoFlutuanteText} name="add"/>
+            <TouchableOpacity onPress={() => setModalVisible(!modalVisible)} style={styles.botaoFlutuante}>
+              <TabBarIcon style={styles.botaoFlutuanteText} name="add" />
             </TouchableOpacity>
           </View>
-
         ) : null
       }
     </ThemedView>
@@ -95,9 +99,8 @@ export default function Tarefa() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop:50,
-    paddingHorizontal:16,
-    backgroundColor: '#fff',
+    paddingTop: 50,
+    paddingHorizontal: 16,
   },
   title: {
     fontSize: 24,
@@ -110,10 +113,10 @@ const styles = StyleSheet.create({
     marginVertical: 8,
   },
   checkbox: {
-    marginRight: 12, // Espaço entre a caixa de seleção e o texto
+    marginRight: 12,
   },
   taskTextContainer: {
-    flex: 1, // Permite que o texto ocupe o espaço restante
+    flex: 1,
   },
   taskText: {
     fontSize: 18,
@@ -125,26 +128,15 @@ const styles = StyleSheet.create({
   containerBotaoFlutuante: {
     position: 'absolute',
     bottom: 80,
-    right: 16
+    right: 16,
   },
   botaoFlutuante: {
-    
+    backgroundColor: 'red',
+    borderRadius: 100,
   },
   botaoFlutuanteText: {
-    fontSize:50,
-    padding:10,
-    backgroundColor:'red',
-    borderRadius:100,
-    color:'white'
-  },
-  containerModal:{
-    backgroundColor: '#fdf',
-    width: '100%',
-    position: 'absolute',
-    bottom: 0,
-    borderTopStartRadius: 20,
-    borderTopEndRadius: 20,
+    fontSize: 50,
     padding: 10,
-    shadowColor: 'black',
-  }
+    color: 'white',
+  },
 });
