@@ -21,7 +21,7 @@ export default function TabLayout() {
         options={{
           title: 'Home',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+            <TabBarIcon name={focused ? 'home' : 'home-outline'} color='black' />
           ),
         }}
       />
@@ -30,7 +30,7 @@ export default function TabLayout() {
         options={{
           title: 'to-do',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'checkbox' : 'checkbox-outline'} color={color} />
+            <TabBarIcon name={focused ? 'checkbox' : 'checkbox-outline'} color="black" />
           ),
         }}
       />
@@ -39,7 +39,7 @@ export default function TabLayout() {
         options={{
           title: 'tarefas',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'file-tray-stacked' : 'file-tray-full-outline'} color={color} />
+            <TabBarIcon name={focused ? 'file-tray-stacked' : 'file-tray-full-outline'} color="black" />
           ),
         }}
       />
@@ -55,5 +55,6 @@ const styles = StyleSheet.create({
     position:'absolute',
     bottom: 10,
     left:'15%',
+    borderWidth:1
   }
 });

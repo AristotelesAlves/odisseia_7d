@@ -31,15 +31,23 @@ export default function todo() {
   };
 
   function newTask(text: string){
-    const newTask = {
-      id: (tasks.length + 1).toString(),
-      text,
-      completed: false
+
+    if(text.length > 0 ){
+      const newTask = {
+        id: (tasks.length + 1).toString(),
+        text,
+        completed: false
+      }
+  
+      setTasks([
+        ...tasks, newTask
+      ])
+      setModalVisible(false)
+      return;
+    
     }
 
-    setTasks([
-      ...tasks, newTask
-    ])
+    return;
 
 
   }
@@ -52,9 +60,9 @@ export default function todo() {
         style={styles.checkbox}
       />
       <TouchableOpacity onPress={() => toggleTaskCompletion(item.id)} style={styles.taskTextContainer}>
-        <Text style={[styles.taskText, item.completed && styles.taskCompleted]}>
+        <ThemedText type='default' style={[styles.taskText, item.completed && styles.taskCompleted]}>
           {item.text}
-        </Text>
+        </ThemedText>
       </TouchableOpacity>
     </View>
   );
@@ -71,7 +79,7 @@ export default function todo() {
         >
           <TodoModal callBackNewTask={(e) => newTask(e)}  modalStatus={() => setModalVisible(!modalVisible)}/>
         </Modal>
-        <ThemedText type="default" style={styles.title}>
+        <ThemedText type="title" style={styles.title}>
           To-do
         </ThemedText>
         <ThemedText type="default" style={styles.title}>
@@ -131,12 +139,12 @@ const styles = StyleSheet.create({
     right: 16,
   },
   botaoFlutuante: {
-    backgroundColor: 'red',
     borderRadius: 100,
+    borderWidth:2
   },
   botaoFlutuanteText: {
     fontSize: 50,
     padding: 10,
-    color: 'white',
+    color: 'black',
   },
 });

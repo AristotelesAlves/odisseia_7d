@@ -20,7 +20,6 @@ export function TodoModal(props: IProps){
 
   function handleButtonNewTask(){
     props.callBackNewTask(newTask)
-    props.modalStatus()
   } 
 
     return (
@@ -47,7 +46,7 @@ export function TodoModal(props: IProps){
 const styles = StyleSheet.create({
     containerModal:{
       // backgroundColor: '#03ff9c',
-      backgroundColor: '#0ecb80',
+      backgroundColor: 'white',
       width: '100%',
       position: 'absolute',
       bottom: 0,
@@ -55,7 +54,8 @@ const styles = StyleSheet.create({
       borderTopEndRadius: 20,
       padding: 10,
       shadowColor: 'black',
-      gap:10
+      gap:10,
+      borderWidth:2
     },
   
     headerModal:{
@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
       padding:10,
       borderRadius:4,
       width:'90%',
+      borderWidth: 1,
     },
     buttonInput:{
       width:'10%',
@@ -78,7 +79,8 @@ const styles = StyleSheet.create({
       backgroundColor:'white',
       borderRadius:4,
       shadowColor: 'black',
-      shadowRadius:10
+      shadowRadius:10,
+      borderWidth: 1,
     },
   }
 );
